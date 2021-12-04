@@ -10,7 +10,8 @@ nano config.json
 ```
 Start the server
 ```bash
-node server```
+node server
+```
 
 ### Built with JSON-Collection
 
