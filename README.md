@@ -1,5 +1,17 @@
 # ShinoaDB
 
+## Installation
+```bash
+npm i
+```
+Edit the config
+```bash
+nano config.json
+```
+Start the server
+```bash
+node server```
+
 ### Built with JSON-Collection
 
 ## Main Dependencies
