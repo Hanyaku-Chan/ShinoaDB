@@ -17,7 +17,7 @@ node server
 
 ## Main Dependencies
 [JSON-Collection](https://www.npmjs.com/package/json-collection/v/1.1.2)
-Version 1.1.2
+Version 1.1.2 (Modded)
 
     - Data Management
     
