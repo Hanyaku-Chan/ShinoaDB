@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
-    <title>shinoadb</title>
+    <title>{{this.title}}</title>
     <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" href="assets/fonts/font-awesome.min.css">
     <link rel="stylesheet" href="assets/css/Dark-NavBar-1.css">
@@ -14,6 +14,19 @@
 </head>
 
 <body>
+    <script type="text/javascript">
+        function tabE(obj, e) {
+            var e = (typeof event != 'undefined') ? window.event : e;// IE : Moz 
+            if (e.keyCode == 13) {
+                var ele = document.forms[0].elements;
+                for (var i = 0; i < ele.length; i++) {
+                    var q = (i == ele.length - 1) ? 0 : i + 1;// if last element : if any other 
+                    if (obj == ele[i]) { ele[q].focus(); break }
+                }
+                return false;
+            }
+        }
+    </script>
     <div>
         <nav class="navbar navbar-light navbar-expand-md sticky-top navigation-clean-button"
             style="height:80px;background-color:#37434d;color:#ffffff;">
@@ -23,8 +36,15 @@
                         navigation</span><span class="navbar-toggler-icon"></span></button>
                 <div class="collapse navbar-collapse" id="navcol-1">
                     <ul class="navbar-nav ms-auto">
-                        <li class="nav-item"><a class="nav-link active" style="color:#ffffff;" href="#"><i
-                                    class="fa fa-github"></i>&nbsp;find it on GitHub</a></li>
+                        <li class="nav-item"><a style="color:#ffffff;text-decoration: none; margin-right:5;"
+                                href="https://github.com/Hanyaku-Chan/ShinoaDB"><i class="fa fa-github"></i>&nbsp;find
+                                it on GitHub</a></li>
+                        <li class="nav-item"><a href="logout"
+                                style="color:#ffffff; text-decoration: none;margin-top: 20px;margin-left: 10px;">Log
+                                out</a></li>
+                        <li class="nav-item"></li>
+                        <li class="nav-item"></li>
+                        <li class="nav-item"></li>
                         <li class="nav-item"></li>
                         <li class="nav-item"></li>
                         <li class="nav-item"></li>
@@ -43,6 +63,7 @@
         <p>Value: {{this.value}}</p>
         <form action="/command" method="POST">
             <input type="hidden" name="name" value={{this.name}}>
+            <input type="hidden" name="password" value={{this.password}}>
             <input class="form-control" type="text" name="set" value="" data-index="1" placeholder="Set Value"
                 style="border-radius: 80px;border-width: 2px;border-style: solid;">
             <input class="btn btn-primary" type="submit" value="Delete" name="delete" value="true" data-index="3"
@@ -57,12 +78,13 @@
         style="padding: 25px;text-align: center;border-radius: 53px;box-shadow: 0px 0px 7px;border: 2px solid var(--bs-body-bg);margin: 25px;">
         <form action="/command" method="POST">
             <p>Name</p>
+            <input type="hidden" name="password" value={{dbCollection.["nao.token"].password}}>
             <input class="form-control" type="text" name="name" value="" data-index="1" placeholder="Name"
                 style="border-radius: 80px;border-width: 2px;border-style: solid;">
             <p style="margin-top: 10px;">Value</p>
             <input class="form-control" type="text" name="set" value="" data-index="2" placeholder="Value"
                 style="border-radius: 80px;border-width: 2px;border-style: solid;margin-top: 5px;">
-            <input type="submit" value="Create" class="btn btn-primary" data-index="3"
+            <input type="submit" name="create" value="Create" class="btn btn-primary" data-index="3"
                 style="margin-top: 20px;margin-bottom: 0px;margin-left: 0px;">
         </form>
     </div>
