@@ -11,52 +11,52 @@ var dbCollection = new jsonCollection();
 var net = require('net');
 var server = net.createServer();
 //on data from the client
-server.on('connection', function(socket) {
+server.on('connection', function (socket) {
 
     //get socket ip adress
     var remoteAddress = socket.remoteAddress;
-    
+
     //on data event
-    socket.on('data', async function(data) {
+    socket.on('data', async function (data) {
         var dataString = data.toString();
         //split data string into array
         var dataArray = dataString.split(' ');
         //get the first element of the array
         var command = dataArray[0];
 
-        switch(command) {
+        switch (command) {
             case 'get':
 
-                if(dbCollection.get(dataArray[1]) != undefined) {
+                if (dbCollection.get(dataArray[1]) != undefined) {
                     socket.write(dbCollection.get(dataArray[1]));
                 } else {
                     socket.write('undefined');
                 }
 
-            break;
+                break;
 
             case 'set':
                 var data = dataArray.join(' ').slice(dataArray[0].length + 1 + dataArray[1].length + 1);
                 dbCollection.set(dataArray[1], data);
                 await delay(100);
                 dbCollection.save('./data.json');
-            break;
+                break;
 
             case 'delete':
                 dbCollection.delete(dataArray[1]);
                 await delay(100);
                 dbCollection.save('./data.json');
-            break;
+                break;
 
         }
     });
 });
 
-server.listen(require("./config.json").port, function() {
-    if(fs.existsSync('data.json')){
+server.listen(require("./config.json").port, function () {
+    if (fs.existsSync('data.json')) {
         dbCollection.load('./data.json');
-     }
-     console.log('Server listening on port ' + require("./config.json").port);
+    }
+    console.log('Server listening on port ' + require("./config.json").port);
 });
 
 //create web interface
@@ -87,7 +87,7 @@ app.get('/', function (req, res) {
 
 app.get('/get', async (req, res) => {
     var key = req.query.key;
-    if(dbCollection.get(key) != undefined) {
+    if (dbCollection.get(key) != undefined) {
         res.send(dbCollection.get(key));
     }
     else {
@@ -114,20 +114,31 @@ app.get('/delete', async (req, res) => {
 
 app.post('/command', async (req, res) => {
     var cmd = "";
-    if(req.body.set !== '') cmd = 'set'
-    if(req.body.delete == "Delete") cmd = "delete"
+    if (req.body.set !== '') cmd = 'set'
+    if (req.body.delete == "Delete") cmd = "delete"
+    if (req.body.create == 'Create') cmd = 'create'
 
-    switch(cmd) {
+    switch (cmd) {
         case 'set':
             dbCollection.set(req.body.name, req.body.set);
             await delay(100);
             dbCollection.save('./data.json');
-        break;
+            break;
         case 'delete':
             dbCollection.delete(req.body.name);
             await delay(100);
             dbCollection.save('./data.json');
-        break;
+            break;
+        case 'create':
+            if (dbCollection.get(req.body.name) !== undefined) return res.render('error.hbs', {
+                title: "ShinoaDB | Web Interface",
+                dataBase: dbCollection.getJson(),
+                err: "Key already exists"
+            });
+            dbCollection.set(req.body.name, req.body.set);
+            await delay(100);
+            dbCollection.save('./data.json');
+            break;
     }
 
     await delay(100);
