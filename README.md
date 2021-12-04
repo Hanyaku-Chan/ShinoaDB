@@ -20,7 +20,8 @@ node server
 Version 1.1.2 (Modded)
 
     - Data Management
-    
+No need to install. Contained in the custom_modules folder.
+
 [Express](https://www.npmjs.com/package/express/v/4.17.1)
 Version 4.17.1
 
